@@ -10,7 +10,8 @@ namespace psy_trance_com
 
             config.Routes.MapHttpRoute(
                 name: "Default",
-                routeTemplate: "{controller}/{action}"
+                routeTemplate: "api/{controller}/{action}",
+                defaults: new { controller = "Default", action = "Index" }
             );
         }
     }

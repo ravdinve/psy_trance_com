@@ -17,5 +17,10 @@ namespace psy_trance_com.DataAccessLayer.Models
         {
             return Name.Equals(torrent.Name);
         }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

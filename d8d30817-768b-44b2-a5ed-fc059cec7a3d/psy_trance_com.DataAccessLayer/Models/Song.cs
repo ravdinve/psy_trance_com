@@ -33,5 +33,10 @@ namespace psy_trance_com.DataAccessLayer.Models
         {
             return File.Equals(song.File);
         }
+
+        public override int GetHashCode()
+        {
+            return File.GetHashCode();
+        }
     }
 }

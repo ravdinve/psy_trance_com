@@ -32,5 +32,10 @@ namespace psy_trance_com.DataAccessLayer.Models
         {
             return Folder.Equals(album.Folder);
         }
+
+        public override int GetHashCode()
+        {
+            return Folder.GetHashCode();
+        }
     }
 }

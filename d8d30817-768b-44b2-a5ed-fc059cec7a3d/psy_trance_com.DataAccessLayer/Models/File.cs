@@ -15,5 +15,10 @@ namespace psy_trance_com.DataAccessLayer.Models
         {
             return Name.Equals(file.Name);
         }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

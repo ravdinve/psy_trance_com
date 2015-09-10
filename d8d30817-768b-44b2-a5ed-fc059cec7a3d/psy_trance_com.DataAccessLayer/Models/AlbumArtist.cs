@@ -24,5 +24,10 @@ namespace psy_trance_com.DataAccessLayer.Models
         {
             return Name.Equals(albumArtist.Name);
         }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }

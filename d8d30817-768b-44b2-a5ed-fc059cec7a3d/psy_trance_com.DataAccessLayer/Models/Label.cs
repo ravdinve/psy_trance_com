@@ -24,5 +24,10 @@ namespace psy_trance_com.DataAccessLayer.Models
         {
             return Name.Equals(label.Name);
         }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
     }
 }
