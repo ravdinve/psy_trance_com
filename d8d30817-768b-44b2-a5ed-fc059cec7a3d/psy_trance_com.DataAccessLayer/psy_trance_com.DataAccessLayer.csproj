@@ -50,11 +50,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbContext.cs" />
+    <Compile Include="Models\Album.cs" />
+    <Compile Include="Models\AlbumArtist.cs" />
+    <Compile Include="Models\Artist.cs" />
+    <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\File.cs" />
+    <Compile Include="Models\Folder.cs" />
+    <Compile Include="Models\Genre.cs" />
+    <Compile Include="Models\Jpeg.cs" />
+    <Compile Include="Models\Label.cs" />
+    <Compile Include="Models\Song.cs" />
+    <Compile Include="Models\Torrent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
