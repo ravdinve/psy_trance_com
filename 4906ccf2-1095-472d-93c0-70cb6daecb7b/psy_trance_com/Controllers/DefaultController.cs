@@ -38,22 +38,24 @@ namespace psy_trance_com.Controllers
 
                         tagLib.Save();
 
-                        var album = new Album
+                        var _albums = new List<Album>
                         {
-                            Name = tagLib.Tag.Album,
+                            new Album
+                            {
+                                Name = tagLib.Tag.Album,
 
-                            AlbumArtists = new List<AlbumArtist>(),
-                            Artists = new List<Artist>(),
-                            Genres = new List<Genre>(),
-                            Songs = new List<Song>(),
+                                AlbumArtists = new List<AlbumArtist>(),
+                                Artists = new List<Artist>(),
+                                Genres = new List<Genre>(),
+                                Songs = new List<Song>(),
 
-                            Folder = folder
+                                Folder = folder
+                            }
                         };
 
-                        if (!albums.Contains(album))
-                            albums.Add(album);
+                        albums = albums.Union(_albums).ToList();
 
-                        albumArtists = albumArtists.Union(tagLib.Tag.AlbumArtists.Select(name => new AlbumArtist
+                        var _albumArtists = tagLib.Tag.AlbumArtists.Select(name => new AlbumArtist
                         {
                             Name = name,
 
@@ -61,19 +63,23 @@ namespace psy_trance_com.Controllers
                             Artists = new List<Artist>(),
                             Genres = new List<Genre>(),
                             Songs = new List<Song>(),
-                        })).ToList();
+                        });
 
-                        artists = artists.Union(tagLib.Tag.Artists.Select(name => new Artist
+                        albumArtists = albumArtists.Union(_albumArtists).ToList();
+
+                        var _artists = tagLib.Tag.Artists.Select(name => new Artist
                         {
                             Name = name,
 
                             Albums = new List<Album>(),
                             AlbumArtists = new List<AlbumArtist>(),
                             Genres = new List<Genre>(),
-                            Songs = new List<Song>(),
-                        })).ToList();
+                            //Songs = new List<Song>(),
+                        });
 
-                        genres = genres.Union(tagLib.Tag.Genres.Select(name => new Genre
+                        artists = artists.Union(_artists).ToList();
+
+                        var _genres = tagLib.Tag.Genres.Select(name => new Genre
                         {
                             Name = name,
 
@@ -81,22 +87,36 @@ namespace psy_trance_com.Controllers
                             AlbumArtists = new List<AlbumArtist>(),
                             Artists = new List<Artist>(),
                             Songs = new List<Song>(),
-                        })).ToList();
+                        });
 
-                        var song = new Song
+                        genres = genres.Union(_genres).ToList();
+
+                        var _songs = new List<Song>
                         {
-                            Name = tagLib.Tag.Title,
+                            new Song
+                            {
+                                Name = tagLib.Tag.Title,
 
-                            Albums = new List<Album>(),
-                            AlbumArtists = new List<AlbumArtist>(),
-                            Artists = new List<Artist>(),
-                            Genres = new List<Genre>(),
+                                Albums = new List<Album>(),
+                                AlbumArtists = new List<AlbumArtist>(),
+                                //Artists = new List<Artist>(),
+                                Genres = new List<Genre>(),
 
-                            File = file
+                                File = file
+                            }
                         };
 
-                        if (!songs.Contains(song))
-                            songs.Add(song);
+                        songs = songs.Union(_songs).ToList();
+
+                        artists.Intersect(_artists).ToList().ForEach(artist =>
+                        {
+                            artist.Songs = songs.Intersect(_songs).ToList();
+                        });
+
+                        songs.Intersect(_songs).ToList().ForEach(song =>
+                        {
+                            song.Artists = artists.Intersect(_artists).ToList();
+                        });
                     }
                 });
 
@@ -139,8 +159,6 @@ namespace psy_trance_com.Controllers
                     //song.Artists = song.Artists.Union(artists).ToList();
                     song.Genres = song.Genres.Union(genres).ToList();
                 });
-
-                var b = artists;
             });
 
             return httpResponseMessage;
