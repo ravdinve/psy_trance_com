@@ -96,6 +96,12 @@
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\d8d30817-768b-44b2-a5ed-fc059cec7a3d\psy_trance_com.DataAccessLayer\psy_trance_com.DataAccessLayer.csproj">
+      <Project>{63f6dab9-23df-47b1-9662-6d98ded245ec}</Project>
+      <Name>psy_trance_com.DataAccessLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
