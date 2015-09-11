@@ -3,10 +3,10 @@ using System.Web.Http;
 
 namespace psy_trance_com.Controllers
 {
-    public class DefaultController : ApiController
+    public class FoldersController : ApiController
     {
         [HttpGet]
-        public HttpResponseMessage Index()
+        public HttpResponseMessage Index(string folderName = null)
         {
             var httpResponseMessage = Request.CreateResponse();
 
