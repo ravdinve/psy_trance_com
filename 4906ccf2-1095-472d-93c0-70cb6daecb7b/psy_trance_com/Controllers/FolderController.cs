@@ -15,6 +15,9 @@ namespace psy_trance_com.Controllers
         List<Genre> _genres = new List<Genre>();
         List<Song> _songs = new List<Song>();
 
+        List<Folder> _folders = new List<Folder>();
+        List<File> _files = new List<File>();
+
         [HttpGet]
         public HttpResponseMessage Index(string folderName)
         {
@@ -32,29 +35,39 @@ namespace psy_trance_com.Controllers
 
                     file.Save();
 
-                    var albums = new List<Album>
+                    var folders = new List<Folder>
+                    {
+                        new Folder
                         {
-                            new Album
-                            {
-                                Name = file.Tag.Album,
+                            Name = folderName
+                        }
+                    };
 
-                                AlbumArtists = new List<AlbumArtist>(),
-                                Artists = new List<Artist>(),
-                                Genres = new List<Genre>(),
-                                Songs = new List<Song>(),
+                    var files = new List<File>
+                    {
+                        new File
+                        {
+                            Name = fileName
+                        }
+                    };
 
-                                Folder = folderName,
-                                Folders = new List<Folder>
-                                {
-                                    new Folder
-                                    {
-                                        Name = folderName
-                                    }
-                                },
+                    var albums = new List<Album>
+                    {
+                        new Album
+                        {
+                            Name = file.Tag.Album,
 
-                                Year = (int) file.Tag.Year
-                            }
-                        };
+                            AlbumArtists = new List<AlbumArtist>(),
+                            Artists = new List<Artist>(),
+                            Genres = new List<Genre>(),
+                            Songs = new List<Song>(),
+
+                            Folder = folderName,
+                            Folders = new List<Folder>(),
+
+                            Year = (int) file.Tag.Year
+                        }
+                    };
 
                     var albumArtists = file.Tag.AlbumArtists.Select(albumArtistName => new AlbumArtist
                     {
@@ -87,35 +100,34 @@ namespace psy_trance_com.Controllers
                     }).ToList();
 
                     var songs = new List<Song>
+                    {
+                        new Song
                         {
-                            new Song
-                            {
-                                Name = file.Tag.Title,
+                            Name = file.Tag.Title,
 
-                                Albums = new List<Album>(),
-                                AlbumArtists = new List<AlbumArtist>(),
-                                Artists = new List<Artist>(),
-                                Genres = new List<Genre>(),
+                            Albums = new List<Album>(),
+                            AlbumArtists = new List<AlbumArtist>(),
+                            Artists = new List<Artist>(),
+                            Genres = new List<Genre>(),
 
-                                File = fileName,
-                                Files = new List<File>
-                                {
-                                    new File
-                                    {
-                                        Name = fileName
-                                    }
-                                },
+                            File = fileName,
+                            Files = new List<File>(),
 
-                                Disc = (int) file.Tag.Disc,
-                                Track = (int) file.Tag.Track
-                            }
-                        };
+                            Disc = (int) file.Tag.Disc,
+                            Track = (int) file.Tag.Track,
+
+                            Time = file.Properties.Duration
+                        }
+                    };
 
                     _albums = _albums.Union(albums).ToList();
                     _albumArtists = _albumArtists.Union(albumArtists).ToList();
                     _artists = _artists.Union(artists).ToList();
                     _genres = _genres.Union(genres).ToList();
                     _songs = _songs.Union(songs).ToList();
+
+                    _folders = _folders.Union(folders).ToList();
+                    _files = _files.Union(files).ToList();
 
                     _artists.Intersect(artists).ToList().ForEach(artist =>
                     {
@@ -125,6 +137,8 @@ namespace psy_trance_com.Controllers
                     _songs.Intersect(songs).ToList().ForEach(song =>
                     {
                         song.Artists = song.Artists.Union(_artists.Intersect(artists)).ToList();
+
+                        song.Files = song.Files.Union(_files.Intersect(files)).ToList();
                     });
                 }
             });
@@ -135,6 +149,8 @@ namespace psy_trance_com.Controllers
                 album.Artists = album.Artists.Union(_artists).ToList();
                 album.Genres = album.Genres.Union(_genres).ToList();
                 album.Songs = album.Songs.Union(_songs).ToList();
+
+                album.Folders = album.Folders.Union(_folders).ToList();
             });
 
             _albumArtists.ToList().ForEach(albumArtist =>
@@ -167,6 +183,8 @@ namespace psy_trance_com.Controllers
                 song.AlbumArtists = song.AlbumArtists.Union(_albumArtists).ToList();
                 //song.Artists = song.Artists.Union(_artists).ToList();
                 song.Genres = song.Genres.Union(_genres).ToList();
+
+                //song.Files = song.Files.Union(_files).ToList();
             });
 
             return httpResponseMessage;

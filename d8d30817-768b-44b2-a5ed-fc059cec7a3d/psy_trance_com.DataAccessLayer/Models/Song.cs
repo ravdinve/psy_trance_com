@@ -27,7 +27,7 @@ namespace psy_trance_com.DataAccessLayer.Models
         public int Disc { get; set; }
         public int Track { get; set; }
 
-        //public TimeSpan Time { get; set; }
+        public TimeSpan Time { get; set; }
 
         public bool Equals(Song song)
         {
