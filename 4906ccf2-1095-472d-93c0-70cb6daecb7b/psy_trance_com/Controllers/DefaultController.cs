@@ -9,157 +9,177 @@ namespace psy_trance_com.Controllers
 {
     public class DefaultController : ApiController
     {
+        List<Album> _albums = new List<Album>();
+        List<AlbumArtist> _albumArtists = new List<AlbumArtist>();
+        List<Artist> _artists = new List<Artist>();
+        List<Genre> _genres = new List<Genre>();
+        List<Song> _songs = new List<Song>();
+
         [HttpGet]
-        public HttpResponseMessage Index()
+        public HttpResponseMessage Index(string folderName)
         {
             var httpResponseMessage = Request.CreateResponse();
 
-            var folders = System.IO.Directory.GetDirectories(@"C:\mp3", "*", System.IO.SearchOption.AllDirectories)
-                .ToList();
+            var fileNames = System.IO.Directory.GetFiles(folderName, "*.mp3", System.IO.SearchOption.TopDirectoryOnly).ToList();
 
-            folders.ForEach(folder =>
+            fileNames.ForEach(fileName =>
             {
-                var files = System.IO.Directory.GetFiles(folder, "*.mp3", System.IO.SearchOption.TopDirectoryOnly)
-                    .ToList();
-
-                var albums = new List<Album>();
-                var albumArtists = new List<AlbumArtist>();
-                var artists = new List<Artist>();
-                var genres = new List<Genre>();
-                var songs = new List<Song>();
-
-                files.ForEach(file =>
+                using (var file = TagLib.File.Create(fileName))
                 {
-                    using (var tagLib = TagLib.File.Create(file))
-                    {
-                        tagLib.Tag.AlbumArtists = tagLib.Tag.JoinedAlbumArtists.Split(';').Select(x => x.Trim()).ToArray();
-                        tagLib.Tag.Artists = tagLib.Tag.JoinedArtists.Split(';').Select(x => x.Trim()).ToArray();
-                        tagLib.Tag.Genres = tagLib.Tag.JoinedGenres.Split(';').Select(x => x.Trim()).ToArray();
+                    file.Tag.AlbumArtists = file.Tag.JoinedAlbumArtists.Split(';').Select(x => x.Trim()).ToArray();
+                    file.Tag.Artists = file.Tag.JoinedArtists.Split(';').Select(x => x.Trim()).ToArray();
+                    file.Tag.Genres = file.Tag.JoinedGenres.Split(';').Select(x => x.Trim()).ToArray();
 
-                        tagLib.Save();
+                    file.Save();
 
-                        var _albums = new List<Album>
+                    var albums = new List<Album>
                         {
                             new Album
                             {
-                                Name = tagLib.Tag.Album,
+                                Name = file.Tag.Album,
 
                                 AlbumArtists = new List<AlbumArtist>(),
                                 Artists = new List<Artist>(),
                                 Genres = new List<Genre>(),
                                 Songs = new List<Song>(),
 
-                                Folder = folder
+                                Folder = folderName,
+                                Folders = new List<Folder>
+                                {
+                                    new Folder
+                                    {
+                                        Name = folderName
+                                    }
+                                },
+
+                                Year = (int) file.Tag.Year
                             }
                         };
 
-                        albums = albums.Union(_albums).ToList();
+                    _albums = _albums.Union(albums).ToList();
 
-                        var _albumArtists = tagLib.Tag.AlbumArtists.Select(name => new AlbumArtist
-                        {
-                            Name = name,
+                    var albumArtists = file.Tag.AlbumArtists.Select(albumArtistName => new AlbumArtist
+                    {
+                        Name = albumArtistName,
 
-                            Albums = new List<Album>(),
-                            Artists = new List<Artist>(),
-                            Genres = new List<Genre>(),
-                            Songs = new List<Song>(),
-                        });
+                        Albums = new List<Album>(),
+                        Artists = new List<Artist>(),
+                        Genres = new List<Genre>(),
+                        Songs = new List<Song>(),
+                    }).ToList();
 
-                        albumArtists = albumArtists.Union(_albumArtists).ToList();
+                    _albumArtists = _albumArtists.Union(albumArtists).ToList();
 
-                        var _artists = tagLib.Tag.Artists.Select(name => new Artist
-                        {
-                            Name = name,
+                    var artists = file.Tag.Artists.Select(artistName => new Artist
+                    {
+                        Name = artistName,
 
-                            Albums = new List<Album>(),
-                            AlbumArtists = new List<AlbumArtist>(),
-                            Genres = new List<Genre>(),
-                            //Songs = new List<Song>(),
-                        });
+                        Albums = new List<Album>(),
+                        AlbumArtists = new List<AlbumArtist>(),
+                        Genres = new List<Genre>(),
+                        //Songs = new List<Song>(),
+                    }).ToList();
 
-                        artists = artists.Union(_artists).ToList();
+                    _artists = _artists.Union(artists).ToList();
 
-                        var _genres = tagLib.Tag.Genres.Select(name => new Genre
-                        {
-                            Name = name,
+                    var genres = file.Tag.Genres.Select(genreName => new Genre
+                    {
+                        Name = genreName,
 
-                            Albums = new List<Album>(),
-                            AlbumArtists = new List<AlbumArtist>(),
-                            Artists = new List<Artist>(),
-                            Songs = new List<Song>(),
-                        });
+                        Albums = new List<Album>(),
+                        AlbumArtists = new List<AlbumArtist>(),
+                        Artists = new List<Artist>(),
+                        Songs = new List<Song>(),
+                    }).ToList();
 
-                        genres = genres.Union(_genres).ToList();
+                    _genres = _genres.Union(genres).ToList();
 
-                        var _songs = new List<Song>
+                    var songs = new List<Song>
                         {
                             new Song
                             {
-                                Name = tagLib.Tag.Title,
+                                Name = file.Tag.Title,
 
                                 Albums = new List<Album>(),
                                 AlbumArtists = new List<AlbumArtist>(),
                                 //Artists = new List<Artist>(),
                                 Genres = new List<Genre>(),
 
-                                File = file
+                                File = fileName,
+                                Files = new List<File>
+                                {
+                                    new File
+                                    {
+                                        Name = fileName
+                                    }
+                                },
+
+                                Disc = (int) file.Tag.Disc,
+                                Track = (int) file.Tag.Track
                             }
                         };
 
-                        songs = songs.Union(_songs).ToList();
+                    _songs = _songs.Union(songs).ToList();
 
-                        artists.Intersect(_artists).ToList().ForEach(artist =>
-                        {
-                            artist.Songs = songs.Intersect(_songs).ToList();
-                        });
+                    _artists.Intersect(artists).ToList().ForEach(artist =>
+                    {
+                        artist.Songs = _songs.Intersect(songs).ToList();
+                    });
 
-                        songs.Intersect(_songs).ToList().ForEach(song =>
-                        {
-                            song.Artists = artists.Intersect(_artists).ToList();
-                        });
-                    }
-                });
-
-                albums.ToList().ForEach(album =>
-                {
-                    album.AlbumArtists = album.AlbumArtists.Union(albumArtists).ToList();
-                    album.Artists = album.Artists.Union(artists).ToList();
-                    album.Genres = album.Genres.Union(genres).ToList();
-                    album.Songs = album.Songs.Union(songs).ToList();
-                });
-
-                albumArtists.ToList().ForEach(albumArtist =>
-                {
-                    albumArtist.Albums = albumArtist.Albums.Union(albums).ToList();
-                    albumArtist.Artists = albumArtist.Artists.Union(artists).ToList();
-                    albumArtist.Genres = albumArtist.Genres.Union(genres).ToList();
-                    albumArtist.Songs = albumArtist.Songs.Union(songs).ToList();
-                });
-
-                artists.ToList().ForEach(artist =>
-                {
-                    artist.Albums = artist.Albums.Union(albums).ToList();
-                    artist.AlbumArtists = artist.AlbumArtists.Union(albumArtists).ToList();
-                    artist.Genres = artist.Genres.Union(genres).ToList();
-                    //artist.Songs = artist.Songs.Union(songs).ToList();
-                });
-
-                genres.ToList().ForEach(genre =>
-                {
-                    genre.Albums = genre.Albums.Union(albums).ToList();
-                    genre.AlbumArtists = genre.AlbumArtists.Union(albumArtists).ToList();
-                    genre.Artists = genre.Artists.Union(artists).ToList();
-                    genre.Songs = genre.Songs.Union(songs).ToList();
-                });
-
-                songs.ToList().ForEach(song =>
-                {
-                    song.Albums = song.Albums.Union(albums).ToList();
-                    song.AlbumArtists = song.AlbumArtists.Union(albumArtists).ToList();
-                    //song.Artists = song.Artists.Union(artists).ToList();
-                    song.Genres = song.Genres.Union(genres).ToList();
-                });
+                    _songs.Intersect(songs).ToList().ForEach(song =>
+                    {
+                        song.Artists = _artists.Intersect(artists).ToList();
+                    });
+                }
             });
+
+            _albums.ToList().ForEach(album =>
+            {
+                album.AlbumArtists = album.AlbumArtists.Union(_albumArtists).ToList();
+                album.Artists = album.Artists.Union(_artists).ToList();
+                album.Genres = album.Genres.Union(_genres).ToList();
+                album.Songs = album.Songs.Union(_songs).ToList();
+            });
+
+            _albumArtists.ToList().ForEach(albumArtist =>
+            {
+                albumArtist.Albums = albumArtist.Albums.Union(_albums).ToList();
+                albumArtist.Artists = albumArtist.Artists.Union(_artists).ToList();
+                albumArtist.Genres = albumArtist.Genres.Union(_genres).ToList();
+                albumArtist.Songs = albumArtist.Songs.Union(_songs).ToList();
+            });
+
+            _artists.ToList().ForEach(artist =>
+            {
+                artist.Albums = artist.Albums.Union(_albums).ToList();
+                artist.AlbumArtists = artist.AlbumArtists.Union(_albumArtists).ToList();
+                artist.Genres = artist.Genres.Union(_genres).ToList();
+                //artist.Songs = artist.Songs.Union(songs).ToList();
+            });
+
+            _genres.ToList().ForEach(genre =>
+            {
+                genre.Albums = genre.Albums.Union(_albums).ToList();
+                genre.AlbumArtists = genre.AlbumArtists.Union(_albumArtists).ToList();
+                genre.Artists = genre.Artists.Union(_artists).ToList();
+                genre.Songs = genre.Songs.Union(_songs).ToList();
+            });
+
+            _songs.ToList().ForEach(song =>
+            {
+                song.Albums = song.Albums.Union(_albums).ToList();
+                song.AlbumArtists = song.AlbumArtists.Union(_albumArtists).ToList();
+                //song.Artists = song.Artists.Union(artists).ToList();
+                song.Genres = song.Genres.Union(_genres).ToList();
+            });
+
+            //var folderNames = System.IO.Directory.GetDirectories(@"C:\mp3", "*", System.IO.SearchOption.AllDirectories)
+            //    .ToList();
+
+            //folderNames.ForEach(folderName =>
+            //{
+
+            //});
 
             return httpResponseMessage;
         }

@@ -24,8 +24,8 @@ namespace psy_trance_com.DataAccessLayer.Models
         public string File { get; set; }
         public virtual List<File> Files { get; set; }
 
-        //public int Disc { get; set; }
-        //public int Track { get; set; }
+        public int Disc { get; set; }
+        public int Track { get; set; }
 
         //public TimeSpan Time { get; set; }
 

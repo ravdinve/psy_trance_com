@@ -24,7 +24,7 @@ namespace psy_trance_com.DataAccessLayer.Models
         public string Folder { get; set; }
         public virtual List<Folder> Folders { get; set; }
 
-        //public int Year { get; set; }
+        public int Year { get; set; }
 
         //public virtual List<Jpeg> Jpeg { get; set; }
 
