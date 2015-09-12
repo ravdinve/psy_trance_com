@@ -91,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="index.html" />
+    <Content Include="js\jquery-1.11.3.min.js" />
+    <Content Include="js\jquery-ui-1.11.4.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -114,7 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="css\" />
     <Folder Include="Models\" />
+    <Folder Include="png\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\d8d30817-768b-44b2-a5ed-fc059cec7a3d\psy_trance_com.DataAccessLayer\psy_trance_com.DataAccessLayer.csproj">

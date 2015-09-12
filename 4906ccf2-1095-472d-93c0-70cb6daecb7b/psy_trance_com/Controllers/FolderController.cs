@@ -35,22 +35,6 @@ namespace psy_trance_com.Controllers
 
                     file.Save();
 
-                    var folders = new List<Folder>
-                    {
-                        new Folder
-                        {
-                            Name = folderName
-                        }
-                    };
-
-                    var files = new List<File>
-                    {
-                        new File
-                        {
-                            Name = fileName
-                        }
-                    };
-
                     var albums = new List<Album>
                     {
                         new Album
@@ -117,6 +101,22 @@ namespace psy_trance_com.Controllers
                             Track = (int) file.Tag.Track,
 
                             Time = file.Properties.Duration
+                        }
+                    };
+
+                    var folders = new List<Folder>
+                    {
+                        new Folder
+                        {
+                            Name = folderName
+                        }
+                    };
+
+                    var files = new List<File>
+                    {
+                        new File
+                        {
+                            Name = fileName
                         }
                     };
 
