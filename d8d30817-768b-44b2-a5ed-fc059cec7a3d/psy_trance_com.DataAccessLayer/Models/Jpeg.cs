@@ -13,6 +13,8 @@ namespace psy_trance_com.DataAccessLayer.Models
 
         public byte[] Data { get; set; }
 
+        public virtual Album Album { get; set; }
+
         public bool Equals(Jpeg jpeg)
         {
             return Name.Equals(jpeg.Name);
