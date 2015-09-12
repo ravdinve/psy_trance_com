@@ -26,7 +26,7 @@ namespace psy_trance_com.DataAccessLayer.Models
 
         public int Year { get; set; }
 
-        //public virtual List<Jpeg> Jpeg { get; set; }
+        public virtual List<Jpeg> Jpeg { get; set; }
 
         public bool Equals(Album album)
         {

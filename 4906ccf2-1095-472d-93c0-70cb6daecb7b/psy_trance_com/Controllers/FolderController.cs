@@ -18,10 +18,31 @@ namespace psy_trance_com.Controllers
         List<Folder> _folders = new List<Folder>();
         List<File> _files = new List<File>();
 
+        List<Jpeg> _jpeg = new List<Jpeg>();
+
         [HttpGet]
         public HttpResponseMessage Index(string folderName)
         {
             var httpResponseMessage = Request.CreateResponse();
+
+            var torrentCreator = new MonoTorrent.Common.TorrentCreator();
+            var torrentFileSource = new MonoTorrent.Common.TorrentFileSource(folderName);
+
+            torrentCreator.Announces.Add(new List<string>
+                {
+                    "https://psy-trance.com/announce/"
+                });
+
+            torrentCreator.Create(torrentFileSource, folderName + ".torrent");
+
+            var torrent = new Torrent();
+
+            using (var memoryStream = new System.IO.MemoryStream())
+            {
+                torrentCreator.Create(torrentFileSource, memoryStream);
+
+                torrent.Data = memoryStream.ToArray();
+            }
 
             var fileNames = System.IO.Directory.GetFiles(folderName, "*", System.IO.SearchOption.AllDirectories).ToList();
 
@@ -120,6 +141,19 @@ namespace psy_trance_com.Controllers
                         }
                     };
 
+                    var jpeg = new List<Jpeg>();
+
+                    file.Tag.Pictures.ToList().ForEach(picture =>
+                    {
+                        using (var memoryStream = new System.IO.MemoryStream(picture.Data.Data))
+                        {
+                            jpeg.Add(new Jpeg
+                            {
+                                Data = memoryStream.ToArray()
+                            });
+                        }
+                    });
+
                     _albums = _albums.Union(albums).ToList();
                     _albumArtists = _albumArtists.Union(albumArtists).ToList();
                     _artists = _artists.Union(artists).ToList();
@@ -128,6 +162,8 @@ namespace psy_trance_com.Controllers
 
                     _folders = _folders.Union(folders).ToList();
                     _files = _files.Union(files).ToList();
+
+                    _jpeg = _jpeg.Union(jpeg).ToList();
 
                     _artists.Intersect(artists).ToList().ForEach(artist =>
                     {
@@ -151,6 +187,8 @@ namespace psy_trance_com.Controllers
                 album.Songs = album.Songs.Union(_songs).ToList();
 
                 album.Folders = album.Folders.Union(_folders).ToList();
+
+                album.Jpeg = album.Jpeg.Union(_jpeg).ToList();
             });
 
             _albumArtists.ToList().ForEach(albumArtist =>
