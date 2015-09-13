@@ -1,0 +1,271 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #000000;
+}
+
+input {
+    outline: none;
+}
+
+#background {
+    position: relative;
+    background: url("/png/background.png");
+    width: 1272px;
+    height: 1555px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#header, #albums, #artists, #forum, #genres, #parties, #main {
+    display: block;
+    position: absolute;
+}
+
+#header {
+    top: 14px;
+    left: 104px;
+}
+
+#albums {
+    top: 50px;
+    left: 687px;
+}
+
+#artists {
+    top: 51px;
+    left: 546px;
+}
+
+#forum {
+    top: 50px;
+    left: 814px;
+}
+
+#genres {
+    top: 50px;
+    left: 431px;
+}
+
+#parties {
+    top: 58px;
+    left: 297px;
+}
+
+#search {
+    display: block;
+    position: absolute;
+
+    left: 273px;
+    top: 235px;
+    width: 680px;
+    height: 24px;
+
+    background: #000000;
+
+    border: none;
+
+    font-size: 13px;
+    font-family: "Arial";
+    font-weight: bold;
+    color: #c8ff7c;
+
+    padding-left: 6px;
+    padding-right: 6px;
+
+    line-height: 24px;
+}
+
+#search::-webkit-input-placeholder
+{ 
+    font-size: 13px;
+    font-family: "Arial";
+    font-weight: bold;
+    color: #c8ff7c;
+}
+#search::-moz-placeholder
+{ 
+    font-size: 13px;
+    font-family: "Arial";
+    font-weight: bold;
+    color: #c8ff7c;
+}
+#search:-moz-placeholder
+{ 
+    font-size: 13px;
+    font-family: "Arial";
+    font-weight: bold;
+    color: #c8ff7c;
+}
+#search:-ms-input-placeholder
+{
+    font-size: 13px;
+    font-family: "Arial";
+    font-weight: bold;
+    color: #c8ff7c;
+}
+
+#login {
+    position: absolute;
+    background: url("/png/background_login.png");
+
+    left: 642px;
+    top: 269px;
+    width: 398px;
+    height: 64px;
+}
+
+#user_name {
+    font-size: 12px;
+    font-family: "Arial";
+    color: #f37021;
+    line-height: 16px;
+
+    position: absolute;
+    left: 41px;
+    top: 17px;
+
+    width: 118px;
+    height: 16px;
+
+    padding-left: 3px;
+    padding-right: 3px;
+
+    background: none;
+
+    border: none;
+}
+
+#user_name::-webkit-input-placeholder
+{ 
+    font-size: 12px;
+    font-family: "Arial";
+    color: #f37021;
+}
+#user_name::-moz-placeholder
+{ 
+    font-size: 12px;
+    font-family: "Arial";
+    color: #f37021;
+}
+#user_name:-moz-placeholder
+{ 
+    font-size: 12px;
+    font-family: "Arial";
+    color: #f37021;
+}
+#user_name:-ms-input-placeholder
+{
+    font-size: 12px;
+    font-family: "Arial";
+    color: #f37021;
+}
+
+#user_password {
+    font-size: 12px;
+    font-family: "Arial";
+    color: #ed037c;
+    line-height: 16px;
+    position: absolute;
+    left: 188px;
+    top: 17px;
+
+    width: 86px;
+    height: 16px;
+
+    padding-left: 6px;
+    padding-right: 6px;
+
+    background: none;
+
+    border: none;
+}
+#user_password::-webkit-input-placeholder
+{ 
+    font-size: 12px;
+    font-family: "Arial";
+    color: #ed037c;
+}
+#user_password::-moz-placeholder
+{ 
+    font-size: 12px;
+    font-family: "Arial";
+    color: #ed037c;
+}
+#user_password:-moz-placeholder
+{ 
+    font-size: 12px;
+    font-family: "Arial";
+    color: #ed037c;
+}
+#user_password:-ms-input-placeholder
+{
+    font-size: 12px;
+    font-family: "Arial";
+    color: #ed037c;
+}
+
+#register {
+  font-size: 11px;
+  font-family: "Arial";
+    text-decoration: none;
+  color: #000000;
+  position: absolute;
+  left: 44px;
+  top: 34px;
+}
+
+#sendpassword {
+  font-size: 11px;
+  font-family: "Arial";
+    text-decoration: none;
+  color: #000000;
+  position: absolute;
+  left: 194px;
+  top: 34px;
+}
+
+#login_button {
+  font-size: 14px;
+  font-family: "Arial";
+  text-decoration: none;
+  color: #000000;
+  position: absolute;
+  left: 329px;
+  top: 21px;
+}
+
+#main {
+    left: 181px;
+    top: 316px;
+
+    background: url("/png/main.png");
+
+    width: 871px;
+    height: 376px;
+}
+
+#main_header {
+  font-size: 24px;
+  font-family: "Arial";
+  color: #000000;
+  font-weight: bold;
+  position: absolute;
+
+  left: 36px;
+  top: 44px;
+}
+
+.album {
+  position: absolute;
+  left: 81px;
+  top: 89px;
+  width: 719px;
+  height: 131px;
+    border: 1px #e5d0ac solid;
+    background: #f7f1e8;
+}

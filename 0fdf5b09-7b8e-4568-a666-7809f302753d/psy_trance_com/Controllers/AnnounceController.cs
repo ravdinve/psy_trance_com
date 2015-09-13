@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
 
 namespace psy_trance_com.Controllers
 {
@@ -7,11 +6,8 @@ namespace psy_trance_com.Controllers
     public class AnnounceController : ApiController
     {
         [HttpGet]
-        public HttpResponseMessage Index()
+        public void Index()
         {
-            var httpResponseMessage = Request.CreateResponse();
-
-            return httpResponseMessage;
         }
     }
 }
