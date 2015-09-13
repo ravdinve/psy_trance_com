@@ -20,54 +20,10 @@ namespace psy_trance_com.Controllers
         List<Label>_labels = new List<Label>();
         List<Song> _songs = new List<Song>();
 
-        List<Jpeg> _jpegs = new List<Jpeg>();
-        List<Torrent> _torrents = new List<Torrent>();
-
         [HttpGet]
         public HttpResponseMessage Index(string folderName)
         {
             var httpResponseMessage = Request.CreateResponse();
-
-            var folders = new List<Folder>
-            {
-                new Folder
-                {
-                    Name = folderName,
-
-                    Torrents = new List<Torrent>()
-                }
-            };
-
-            var torrentCreator = new MonoTorrent.Common.TorrentCreator();
-            var torrentFileSource = new MonoTorrent.Common.TorrentFileSource(folderName);
-
-            torrentCreator.Announces.Add(new List<string>
-                {
-                    "https://psy-trance.com/announce/"
-                });
-
-            //torrentCreator.Create(torrentFileSource, folderName + ".torrent");
-
-            var torrents = new List<Torrent>();
-
-            using (var memoryStream = new System.IO.MemoryStream())
-            {
-                torrentCreator.Create(torrentFileSource, memoryStream);
-                torrents.Add(new Torrent
-                {
-                    Name = folderName + ".torrent",
-
-                    Data = memoryStream.ToArray()
-                });
-            }
-
-            _folders = _folders.Union(folders).ToList();
-            _torrents = _torrents.Union(torrents).ToList();
-
-            _folders.ToList().ForEach(folder =>
-            {
-                folder.Torrents = folder.Torrents.Union(_torrents).ToList();
-            });
 
             var fileNames = System.IO.Directory.GetFiles(folderName, "*", System.IO.SearchOption.AllDirectories).ToList();
 
@@ -82,21 +38,6 @@ namespace psy_trance_com.Controllers
                     file.Save();
 
                     var fileInfo = new System.IO.FileInfo(fileName);
-
-                    var files = new List<File>
-                    {
-                        new File
-                        {
-                            Name = fileName,
-
-                            BitRate = file.Properties.AudioBitrate,
-                            SampleRate = file.Properties.AudioSampleRate,
-                            Channels = file.Properties.AudioChannels,
-                            BitsPerSample = file.Properties.BitsPerSample,
-
-                            Size = fileInfo.Length
-                        }
-                    };
 
                     var albums = new List<Album>
                     {
@@ -160,7 +101,20 @@ namespace psy_trance_com.Controllers
                             Genres = new List<Genre>(),
 
                             File = fileName,
-                            Files = new List<File>(),
+                            Files = new List<File>
+                            {
+                                new File
+                                {
+                                    Name = fileName,
+
+                                    BitRate = file.Properties.AudioBitrate,
+                                    SampleRate = file.Properties.AudioSampleRate,
+                                    Channels = file.Properties.AudioChannels,
+                                    BitsPerSample = file.Properties.BitsPerSample,
+
+                                    Size = fileInfo.Length
+                                }
+                            },
 
                             Disc = (int) file.Tag.Disc,
                             Track = (int) file.Tag.Track,
@@ -169,13 +123,13 @@ namespace psy_trance_com.Controllers
                         }
                     };
 
-                    var jpeg = new List<Jpeg>();
+                    var jpegs = new List<Jpeg>();
 
                     file.Tag.Pictures.ToList().ForEach(picture =>
                     {
                         using (var memoryStream = new System.IO.MemoryStream(picture.Data.Data))
                         {
-                            jpeg.Add(new Jpeg
+                            jpegs.Add(new Jpeg
                             {
                                 Name = folderName + ".jpeg",
 
@@ -190,10 +144,6 @@ namespace psy_trance_com.Controllers
                     _genres = _genres.Union(genres).ToList();
                     _songs = _songs.Union(songs).ToList();
 
-                    _files = _files.Union(files).ToList();
-
-                    _jpegs = _jpegs.Union(jpeg).ToList();
-
                     _artists.Intersect(artists).ToList().ForEach(artist =>
                     {
                         artist.Songs = artist.Songs.Union(_songs.Intersect(songs)).ToList();
@@ -202,20 +152,8 @@ namespace psy_trance_com.Controllers
                     _songs.Intersect(songs).ToList().ForEach(song =>
                     {
                         song.Artists = song.Artists.Union(_artists.Intersect(artists)).ToList();
-
-                        song.Files = song.Files.Union(_files.Intersect(files)).ToList();
                     });
                 }
-            });
-
-            _folders.ToList().ForEach(folder =>
-            {
-                folder.BitRate =  (int) _files.Select(x => x.BitRate).Average();
-                folder.BitsPerSample = (int)_files.Select(x => x.BitsPerSample).Average();
-                folder.Channels = (int)_files.Select(x => x.Channels).Average();
-                folder.SampleRate = (int)_files.Select(x => x.SampleRate).Average();
-
-                folder.Size = _files.Select(x => x.Size).Sum();
             });
 
             _albums.ToList().ForEach(album =>
@@ -225,7 +163,42 @@ namespace psy_trance_com.Controllers
                 album.Genres = album.Genres.Union(_genres).ToList();
                 album.Songs = album.Songs.Union(_songs).ToList();
 
-                album.Folders = album.Folders.Union(_folders).ToList();
+                using (var memoryStream = new System.IO.MemoryStream())
+                {
+                    var torrentCreator = new MonoTorrent.Common.TorrentCreator();
+                    var torrentFileSource = new MonoTorrent.Common.TorrentFileSource(folderName);
+
+                    torrentCreator.Announces.Add(new List<string>
+                    {
+                        "https://psy-trance.com/announce/"
+                    });
+
+                    //torrentCreator.Create(torrentFileSource, folderName + ".torrent");
+
+                    torrentCreator.Create(torrentFileSource, memoryStream);
+
+                    album.Folders = new List<Folder>
+                    {
+                        new Folder
+                        {
+                            Name = folderName,
+
+                            BitRate =  (int) _files.Select(x => x.BitRate).Average(),
+                            BitsPerSample = (int)_files.Select(x => x.BitsPerSample).Average(),
+                            Channels = (int)_files.Select(x => x.Channels).Average(),
+                            SampleRate = (int)_files.Select(x => x.SampleRate).Average(),
+
+                            Size = _files.Select(x => x.Size).Sum(),
+
+                            Torrent = new Torrent
+                            {
+                                Name = folderName + ".torrent",
+
+                                Data = memoryStream.ToArray()
+                            }
+                        }
+                    };
+                }
 
                 album.Jpeg = album.Jpeg.Union(_jpegs).ToList();
             });
