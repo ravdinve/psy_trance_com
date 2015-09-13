@@ -21,7 +21,7 @@ namespace psy_trance_com.DataAccessLayer.Models
 
         public virtual Album Album { get; set; }
 
-        public virtual List<Torrent> Torrents { get; set; }
+        public virtual Torrent Torrent { get; set; }
 
         public bool Equals(Folder folder)
         {
