@@ -7,7 +7,7 @@ namespace psy_trance_com.DataAccessLayer
     public class DbContext : System.Data.Entity.DbContext
     {
         public DbContext()
-            : base("u425815")
+            : base("psy_trance_com")
         {
         }
 
