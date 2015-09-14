@@ -13,8 +13,6 @@ namespace psy_trance_com.DataAccessLayer.Models
 
         public byte[] Data { get; set; }
 
-        public virtual Folder Folder { get; set; }
-
         public bool Equals(Torrent torrent)
         {
             return Name.Equals(torrent.Name);
