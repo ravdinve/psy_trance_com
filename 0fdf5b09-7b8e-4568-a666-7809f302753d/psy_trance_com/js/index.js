@@ -10,8 +10,6 @@
             });
         });
 
-        
-
         $(".search").keyup(function () {
             if (search !== $(".search").val()) {
                 $.get("/api/genres/?genreName=" + $(".search").val()).success(function (data) {
