@@ -7,6 +7,32 @@ body {
     background: #000000;
 }
 
+main {
+    display: block;
+    position: absolute;
+
+    left: 181px;
+    top: 316px;
+
+    background: url("/png/main.png");
+    background-repeat: no-repeat;
+
+    width: 788px;
+    height: 376px;
+
+    padding: 41.5px;
+}
+
+main h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+
+    padding-bottom: 15px;
+}
+
 input {
     outline: none;
 }
@@ -21,42 +47,82 @@ input {
     margin-right: auto;
 }
 
-#header, #albums, #artists, #forum, #genres, #parties, #main {
+a.header {
     display: block;
     position: absolute;
-}
 
-#header {
     top: 14px;
     left: 104px;
+
+    height: 167px;
+    width: 135px;
+
+    text-decoration: none;
 }
 
-#albums {
-    top: 50px;
-    left: 687px;
-}
+a.parties {
+    display: block;
+    position: absolute;
 
-#artists {
-    top: 51px;
-    left: 546px;
-}
-
-#forum {
-    top: 50px;
-    left: 814px;
-}
-
-#genres {
-    top: 50px;
-    left: 431px;
-}
-
-#parties {
     top: 58px;
     left: 297px;
+
+    height: 121px;
+    width: 104px;
+
+    text-decoration: none;
+}
+a.genres {
+    display: block;
+    position: absolute;
+
+    top: 50px;
+    left: 431px;
+
+    height: 132px;
+    width: 104px;
+
+    text-decoration: none;
+}
+a.artists {
+    display: block;
+    position: absolute;
+
+    top: 51px;
+    left: 546px;
+
+    height: 129px;
+    width: 123px;
+
+    text-decoration: none;
+}
+a.albums {
+    display: block;
+    position: absolute;
+
+    top: 50px;
+    left: 687px;
+
+    height: 134px;
+    width: 102px;
+
+    text-decoration: none;
+}
+a.forum {
+    display: block;
+    position: absolute;
+
+    top: 50px;
+    left: 814px;
+
+    height: 132px;
+    width: 140px;
+
+    text-decoration: none;
 }
 
-#search {
+
+.search {
     display: block;
     position: absolute;
 
@@ -80,28 +146,28 @@ input {
     line-height: 24px;
 }
 
-#search::-webkit-input-placeholder
+.search::-webkit-input-placeholder
 { 
     font-size: 13px;
     font-family: "Arial";
     font-weight: bold;
     color: #c8ff7c;
 }
-#search::-moz-placeholder
+.search::-moz-placeholder
 { 
     font-size: 13px;
     font-family: "Arial";
     font-weight: bold;
     color: #c8ff7c;
 }
-#search:-moz-placeholder
+.search:-moz-placeholder
 { 
     font-size: 13px;
     font-family: "Arial";
     font-weight: bold;
     color: #c8ff7c;
 }
-#search:-ms-input-placeholder
+.search:-ms-input-placeholder
 {
     font-size: 13px;
     font-family: "Arial";
@@ -239,33 +305,113 @@ input {
   top: 21px;
 }
 
-#main {
-    left: 181px;
-    top: 316px;
+/*div.genres-1 {
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: #D0B484;
 
-    background: url("/png/main.png");
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #D0B484;
 
-    width: 871px;
-    height: 376px;
+    vertical-align: middle;
+    text-align: center;
+
+    padding-top: 15px;
+    padding-bottom: 15px;
+}*/
+
+/*div.genres-1 a {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: underline;
+    line-height: 17px;
+}*/
+
+div.genres > div:first-child {
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: #D0B484;
+
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #D0B484;
+
+    vertical-align: middle;
+
+    padding-top: 15px;
 }
 
-#main_header {
-  font-size: 24px;
-  font-family: "Arial";
-  color: #000000;
-  font-weight: bold;
-  position: absolute;
+div.genres > div {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #D0B484;
 
-  left: 36px;
-  top: 44px;
+    vertical-align: middle;
+
+    padding-top: 15px;
 }
 
-.album {
-  position: absolute;
-  left: 81px;
-  top: 89px;
-  width: 719px;
-  height: 131px;
-    border: 1px #e5d0ac solid;
-    background: #f7f1e8;
+div.genres > div > div:first-child {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+    
+    vertical-align: top;
+    text-align: center;
+    
+    padding-left: 30px;
+    
+    position: relative;
+    width: 60px;
+    
+    display: inline-block;
+}
+
+div.genres > div > div:last-child {
+    vertical-align: top;
+    
+    position: relative;
+    width: 590px;
+    
+    display: inline-block;
+}
+
+div.genres > div > div:last-child > div {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    color: #000000;
+    text-decoration: none;
+    
+    line-height: 18px;
+    vertical-align: top;
+    
+    padding-right: 30px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+    
+    position: relative;
+    width: 130px;
+    
+    display: inline-block;
+}
+
+div.genres > div > div:last-child > div a {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+    text-decoration: underline;
+}
+
+div.genres {
+    width: 705px;
+
+    margin-left: auto;
+    margin-right: auto;
 }
