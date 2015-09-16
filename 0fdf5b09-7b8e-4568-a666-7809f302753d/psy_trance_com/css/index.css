@@ -305,7 +305,14 @@ a.forum {
   top: 21px;
 }
 
-div.genres > div:first-child {
+div.genres, div.artists {
+    width: 705px;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.genres > div:first-child, div.artists > div:first-child {
     border-top-style: solid;
     border-top-width: 1px;
     border-top-color: #D0B484;
@@ -319,7 +326,7 @@ div.genres > div:first-child {
     padding-top: 15px;
 }
 
-div.genres > div {
+div.genres > div, div.artists > div {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: #D0B484;
@@ -329,7 +336,7 @@ div.genres > div {
     padding-top: 15px;
 }
 
-div.genres > div > div:first-child {
+div.genres > div > div:first-child, div.artists > div > div:first-child {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 24px;
     font-weight: bold;
@@ -347,7 +354,7 @@ div.genres > div > div:first-child {
     display: inline-block;
 }
 
-div.genres > div > div:last-child {
+div.genres > div > div:last-child, div.artists > div > div:last-child {
     vertical-align: top;
     
     position: relative;
@@ -356,7 +363,7 @@ div.genres > div > div:last-child {
     display: inline-block;
 }
 
-div.genres > div > div:last-child > div {
+div.genres > div > div:last-child > div, div.artists > div > div:last-child > div {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: normal;
@@ -376,17 +383,10 @@ div.genres > div > div:last-child > div {
     display: inline-block;
 }
 
-div.genres > div > div:last-child > div a {
+div.genres > div > div:last-child > div a, div.artists > div > div:last-child > div a {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     font-weight: bold;
     color: #000000;
     text-decoration: underline;
-}
-
-div.genres {
-    width: 705px;
-
-    margin-left: auto;
-    margin-right: auto;
 }

@@ -24,10 +24,7 @@ namespace psy_trance_com.Controllers
                 return Request.CreateResponse(genres.Select(genre => new Models.Genre
                 {
                     Id = genre.Id,
-                    Name = genre.Name,
-
-                    Artists = genre.AlbumArtists.Select(x => x.Name).Union(genre.Artists.Select(x => x.Name)).Count(),
-                    Albums = genre.Albums.Count()
+                    Name = genre.Name
                 }).ToList());
             }
         } 
