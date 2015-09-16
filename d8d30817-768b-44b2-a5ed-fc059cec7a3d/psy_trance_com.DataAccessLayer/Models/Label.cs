@@ -13,7 +13,6 @@ namespace psy_trance_com.DataAccessLayer.Models
         public string Name { get; set; }
 
         public virtual List<Album> Albums { get; set; }
-        public virtual List<AlbumArtist> AlbumArtists { get; set; }
         public virtual List<Artist> Artists { get; set; }
         public virtual List<Country> Countries { get; set; }
         public virtual List<Genre> Genres { get; set; }

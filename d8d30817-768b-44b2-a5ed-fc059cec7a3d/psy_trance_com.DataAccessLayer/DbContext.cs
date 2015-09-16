@@ -12,7 +12,6 @@ namespace psy_trance_com.DataAccessLayer
         }
 
         public DbSet<Album> Albums { get; set; }
-        public DbSet<AlbumArtist> AlbumArtists { get; set; }
         public DbSet<Artist> Artists { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Genre> Genres { get; set; }
