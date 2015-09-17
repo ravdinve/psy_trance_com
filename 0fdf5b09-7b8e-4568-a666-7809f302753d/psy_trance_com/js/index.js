@@ -59,7 +59,7 @@ var showGenres = function (Genre) {
     $("div.genres").children().filter(
         function() {
             return $(this).children("div:first-child").text() === letter;
-        }).children("div:last-child").append("<div><a href=/#/" + Genre.Id + ">" + Genre.Name + "</a><br/>Исполнителей: " + Genre.Artists + "<br/>Альбомов: " + Genre.Albums + "<br /></div>");
+        }).children("div:last-child").append("<div><a href=/#/" + Genre.Id + ">" + Genre.Name + "</a><br/>Исполнителей: " + Genre.ArtistsCount + "<br/>Альбомов: " + Genre.AlbumsCount + "<br /></div>");
 
 };
 
@@ -76,6 +76,6 @@ var showArtists = function (Artist) {
     $("div.artists").children().filter(
         function () {
             return $(this).children("div:first-child").text() === letter;
-        }).children("div:last-child").append("<div><a href=/#/" + Artist.Id + ">" + Artist.Name + "</a><br/>Альбомов: " + Artist.Albums + "<br /></div>");
+        }).children("div:last-child").append("<div><a href=/#/" + Artist.Id + ">" + Artist.Name + "</a><br/>Альбомов: " + Artist.AlbumsCount + "<br /></div>");
 
 };

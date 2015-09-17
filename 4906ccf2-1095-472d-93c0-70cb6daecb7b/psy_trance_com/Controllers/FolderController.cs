@@ -64,7 +64,6 @@ namespace psy_trance_com.Controllers
                                            {
                                                Name = file.Tag.Album,
 
-                                               AlbumArtists = new List<AlbumArtist>(),
                                                Artists = new List<Artist>(),
                                                Countries = new List<Country>(),
                                                Genres = new List<Genre>(),
@@ -78,27 +77,9 @@ namespace psy_trance_com.Controllers
                                                Torrent = new List<Torrent>()
                                            });
 
-                                var albumArtists = new List<AlbumArtist>();
-
-                                file.Tag.AlbumArtists.ToList().ForEach(albumArtistName =>
-                                {
-                                    albumArtists.Add(dbContext.AlbumArtists.FirstOrDefault(x => x.Name == albumArtistName) ??
-                                                     new AlbumArtist
-                                                     {
-                                                         Name = albumArtistName,
-
-                                                         Albums = new List<Album>(),
-                                                         Artists = new List<Artist>(),
-                                                         Countries = new List<Country>(),
-                                                         Genres = new List<Genre>(),
-                                                         Labels = new List<Label>(),
-                                                         Songs = new List<Song>(),
-                                                     });
-                                });
-
                                 var artists = new List<Artist>();
 
-                                file.Tag.Artists.ToList().ForEach(artistName =>
+                                file.Tag.Artists.Union(file.Tag.AlbumArtists).ToList().ForEach(artistName =>
                                 {
                                     artists.Add(dbContext.Artists.FirstOrDefault(x => x.Name == artistName) ??
                                                 new Artist
@@ -106,7 +87,6 @@ namespace psy_trance_com.Controllers
                                                     Name = artistName,
 
                                                     Albums = new List<Album>(),
-                                                    AlbumArtists = new List<AlbumArtist>(),
                                                     Countries = new List<Country>(),
                                                     Genres = new List<Genre>(),
                                                     Labels = new List<Label>(),
@@ -126,7 +106,6 @@ namespace psy_trance_com.Controllers
                                                    Name = genreName,
 
                                                    Albums = new List<Album>(),
-                                                   AlbumArtists = new List<AlbumArtist>(),
                                                    Artists = new List<Artist>(),
                                                    Countries = new List<Country>(),
                                                    Labels = new List<Label>(),
@@ -144,7 +123,6 @@ namespace psy_trance_com.Controllers
                                               Name = file.Tag.Title,
 
                                               Albums = new List<Album>(),
-                                              AlbumArtists = new List<AlbumArtist>(),
                                               Artists = new List<Artist>(),
                                               Countries = new List<Country>(),
                                               Genres = new List<Genre>(),
@@ -171,8 +149,7 @@ namespace psy_trance_com.Controllers
 
                                 albums.ForEach(album =>
                                 {
-                                    album.AlbumArtists = album.AlbumArtists.Union(albumArtists).ToList();
-                                    album.Artists = album.Artists.Union(artists).ToList();
+                                    album.Artists = album.Artists.Union(artists.Intersect(file.Tag.AlbumArtists.Select(x => new Artist {Name = x}))).ToList();
                                     album.Countries = album.Countries.Union(countries).ToList();
                                     album.Genres = album.Genres.Union(genres).ToList();
                                     album.Labels = album.Labels.Union(labels).ToList();
@@ -184,22 +161,9 @@ namespace psy_trance_com.Controllers
                                     dbContext.Albums.AddOrUpdate(album);
                                 });
 
-                                albumArtists.ForEach(albumArtist =>
-                                {
-                                    albumArtist.Albums = albumArtist.Albums.Union(albums).ToList();
-                                    albumArtist.Artists = albumArtist.Artists.Union(artists).ToList();
-                                    albumArtist.Countries = albumArtist.Countries.Union(countries).ToList();
-                                    albumArtist.Genres = albumArtist.Genres.Union(genres).ToList();
-                                    albumArtist.Labels = albumArtist.Labels.Union(labels).ToList();
-                                    albumArtist.Songs = albumArtist.Songs.Union(songs).ToList();
-
-                                    dbContext.AlbumArtists.AddOrUpdate(albumArtist);
-                                });
-
                                 artists.ForEach(artist =>
                                 {
                                     artist.Albums = artist.Albums.Union(albums).ToList();
-                                    artist.AlbumArtists = artist.AlbumArtists.Union(albumArtists).ToList();
                                     artist.Countries = artist.Countries.Union(countries).ToList();
                                     artist.Genres = artist.Genres.Union(genres).ToList();
                                     artist.Labels = artist.Labels.Union(labels).ToList();
@@ -211,7 +175,6 @@ namespace psy_trance_com.Controllers
                                 countries.ForEach(country =>
                                 {
                                     country.Albums = country.Albums.Union(albums).ToList();
-                                    country.AlbumArtists = country.AlbumArtists.Union(albumArtists).ToList();
                                     country.Artists = country.Artists.Union(artists).ToList();
                                     country.Genres = country.Genres.Union(genres).ToList();
                                     country.Labels = country.Labels.Union(labels).ToList();
@@ -223,7 +186,6 @@ namespace psy_trance_com.Controllers
                                 genres.ForEach(genre =>
                                 {
                                     genre.Albums = genre.Albums.Union(albums).ToList();
-                                    genre.AlbumArtists = genre.AlbumArtists.Union(albumArtists).ToList();
                                     genre.Artists = genre.Artists.Union(artists).ToList();
                                     genre.Countries = genre.Countries.Union(countries).ToList();
                                     genre.Labels = genre.Labels.Union(labels).ToList();
@@ -235,7 +197,6 @@ namespace psy_trance_com.Controllers
                                 labels.ForEach(label =>
                                 {
                                     label.Albums = label.Albums.Union(albums).ToList();
-                                    label.AlbumArtists = label.AlbumArtists.Union(albumArtists).ToList();
                                     label.Artists = label.Artists.Union(artists).ToList();
                                     label.Countries = label.Countries.Union(countries).ToList();
                                     label.Genres = label.Genres.Union(genres).ToList();
@@ -247,8 +208,7 @@ namespace psy_trance_com.Controllers
                                 songs.ForEach(song =>
                                 {
                                     song.Albums = song.Albums.Union(albums).ToList();
-                                    song.AlbumArtists = song.AlbumArtists.Union(albumArtists).ToList();
-                                    song.Artists = song.Artists.Union(artists).ToList();
+                                    song.Artists = song.Artists.Union(artists.Intersect(file.Tag.Artists.Select(x => new Artist { Name = x }))).ToList();
                                     song.Countries = song.Countries.Union(countries).ToList();
                                     song.Genres = song.Genres.Union(genres).ToList();
                                     song.Labels = song.Labels.Union(labels).ToList();

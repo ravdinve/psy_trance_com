@@ -4,5 +4,8 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public int ArtistsCount { get; set; }
+        public int AlbumsCount { get; set; }
     }
 }

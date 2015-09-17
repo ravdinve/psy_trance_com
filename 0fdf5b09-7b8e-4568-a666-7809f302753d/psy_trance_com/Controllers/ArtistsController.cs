@@ -31,7 +31,9 @@ namespace psy_trance_com.Controllers
                 return Request.CreateResponse(artists.Select(artist => new Models.Artist
                 {
                     Id = artist.Id,
-                    Name = artist.Name
+                    Name = artist.Name,
+
+                    AlbumsCount = artist.Albums.Count
                 }).ToList());
             }
         } 
