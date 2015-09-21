@@ -14,7 +14,8 @@ namespace psy_trance_com.Controllers
         {
             using (var dbContext = new DbContext())
             {
-                IQueryable<Genre> genres = dbContext.Genres.OrderBy(genre => genre.Name);
+                IQueryable<Genre> genres = dbContext.Genres
+                    .OrderBy(genre => genre.Name);
 
                 if (genreName != null)
                 {
@@ -25,8 +26,9 @@ namespace psy_trance_com.Controllers
                 {
                     Id = genre.Id,
                     Name = genre.Name,
-                    ArtistsCount = genre.Artists.Count,
-                    AlbumsCount = genre.Albums.Count
+
+                    Artists = genre.Artists.Count,
+                    Albums = genre.Albums.Count
                 }).ToList());
             }
         } 

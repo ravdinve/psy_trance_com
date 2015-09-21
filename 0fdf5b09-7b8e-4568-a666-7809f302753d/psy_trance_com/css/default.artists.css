@@ -1,0 +1,85 @@
+﻿div.artists {
+    margin-left: auto;
+
+    margin-right: auto;
+    width: 705px;
+}
+
+div.artists > div:first-child {
+    border-bottom-color: #D0B484;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
+    border-top-color: #D0B484;
+    border-top-style: solid;
+    border-top-width: 1px;
+
+    padding-top: 15px;
+
+    vertical-align: middle;
+}
+
+div.artists > div {
+    border-bottom-color: #D0B484;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
+    padding-top: 15px;
+
+    vertical-align: middle;
+}
+
+div.artists > div > div:first-child {
+    color: #000000;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    
+    padding-left: 30px;
+    position: relative;
+    
+    text-align: center;
+    
+    text-decoration: none;
+    vertical-align: top;
+    
+    width: 60px;
+}
+
+div.artists > div > div:last-child {
+    display: inline-block;
+    
+    position: relative;
+    vertical-align: top;
+    
+    width: 590px;
+}
+
+div.artists > div > div:last-child > div {
+    color: #000000;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    
+    line-height: 18px;
+    padding-bottom: 15px;
+    
+    padding-left: 30px;
+    padding-right: 30px;
+    position: relative;
+    
+    text-decoration: none;
+    vertical-align: top;
+    
+    width: 130px;
+}
+
+div.artists > div > div:last-child > div a {
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: underline;
+}

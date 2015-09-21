@@ -10,22 +10,21 @@ namespace psy_trance_com.Controllers
     public class ArtistsController : ApiController
     {
         [HttpGet]
-        public HttpResponseMessage Index(string artistName = null, int? genreId = null)
+        public HttpResponseMessage Index(int genreId = 0, string artistName = null)
         {
             using (var dbContext = new DbContext())
             {
-                IQueryable<Artist> artists = dbContext.Artists.OrderBy(artist => artist.Name);
+                IQueryable<Artist> artists = dbContext.Artists
+                    .OrderBy(artist => artist.Name);
 
                 if (artistName != null)
                 {
                     artists = artists.Where(x => x.Name.Contains(artistName));
                 }
 
-                if (genreId != null)
+                if (genreId != 0)
                 {
-                    var genre = dbContext.Genres.FirstOrDefault(x => x.Id == genreId);
-
-                    artists = artists.Where(x => x.Genres.Contains(genre));
+                    artists = artists.Where(x => x.Genres.Select(y => y.Id).Contains(genreId));
                 }
 
                 return Request.CreateResponse(artists.Select(artist => new Models.Artist
@@ -33,7 +32,7 @@ namespace psy_trance_com.Controllers
                     Id = artist.Id,
                     Name = artist.Name,
 
-                    AlbumsCount = artist.Albums.Count
+                    Albums = artist.Albums.Count
                 }).ToList());
             }
         } 

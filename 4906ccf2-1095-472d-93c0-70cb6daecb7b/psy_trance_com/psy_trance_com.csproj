@@ -94,10 +94,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="css\index.css" />
+    <Content Include="css\default.css" />
     <Content Include="Global.asax" />
-    <Content Include="index.html" />
-    <Content Include="js\index.js" />
+    <Content Include="default.html" />
+    <Content Include="js\default.js" />
     <Content Include="js\jquery-ui.js" />
     <Content Include="js\jquery.jplayer.js" />
     <Content Include="js\jquery.js" />
